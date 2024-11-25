@@ -7,7 +7,7 @@ export const registerNewUser = createAsyncThunk(
   "auth/register",
   async (newUser, thunkAPI) => {
     try {
-      const response = await axios.post("/users/signup", newUser);
+      const response = await axios.post("/auth/register", newUser);
       setAuthorizationHeader(response.data.token);
       return response.data;
     } catch (error) {
@@ -20,7 +20,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (userCreds, thunkAPI) => {
     try {
-      const response = await axios.post("/users/login", userCreds);
+      const response = await axios.post("auth/login", userCreds);
       setAuthorizationHeader(response.data.token);
       return response.data;
     } catch (error) {
@@ -31,35 +31,14 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
-    await axios.post("/users/logout");
+    const response = await axios.post("/auth/logout");
     removeAuthorizationHeader();
-    return;
+    return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);
   }
 });
 
-export const fetchUserData = createAsyncThunk(
-  "auth/fetch",
-  async (_, thunkAPI) => {
-    const reduxState = thunkAPI.getState();
-    const savedToken = reduxState.auth.token;
-    try {
-      setAuthorizationHeader(savedToken);
-      const response = await axios.get("/users/current");
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  },
-  {
-    condition(_, thunkAPI) {
-      const reduxState = thunkAPI.getState();
-      const savedToken = reduxState.auth.token;
-      return savedToken !== null;
-    },
-  }
-);
 
 
 function setAuthorizationHeader(token) {
