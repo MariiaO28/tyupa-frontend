@@ -24,7 +24,6 @@ import { authReducer } from "./auth/authSlice.js";
 
 export const store = configureStore({
   reducer: {
-    // contacts: contactsReducer,
     // filters: filtersReducer,
     auth: authReducer,
   }
