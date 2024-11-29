@@ -1,13 +1,10 @@
 import { useDispatch } from "react-redux";
-import { login, logout, registerNewUser } from "../../redux/auth/authOperations.js";
+import { fetchPetData } from "../../redux/pets/petsOperations";
 
 export default function PetInfo() {
   const dispatch = useDispatch();
   const handleSubmit = () => {
-  dispatch(registerNewUser());
-  dispatch(login())
-  dispatch(logout())
-  
+    dispatch(fetchPetData());
   };
   return (
     <div>

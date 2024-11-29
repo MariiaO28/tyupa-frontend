@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, logout, registerNewUser } from "./authoperations";
+import { handlePending, handleRejected } from "../utils";
 
 function handleAuth(state, action) {
   state.token = action.payload.token;
@@ -7,14 +8,7 @@ function handleAuth(state, action) {
   state.isRefreshing = false;
   state.user.email = action.payload.user.email;
 }
-const handleRejected = (state, action) => {
-  state.isRefreshing = false;
-  state.error = action.payload;
-};
-const handlePending = (state) => {
-  state.isRefreshing = true;
-  state.error = null;
-};
+
 
 const authSlice = createSlice({
   name: "auth",

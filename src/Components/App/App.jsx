@@ -16,6 +16,15 @@ function App() {
   return (
     <Suspense fallback="Page loading...">
       <Routes>
+      <Route
+          path="/"
+          element={
+            <RestrictedRoute
+              component={<SignUpPage />}
+              redirectTo={"/petInfo/:petId"}
+            />
+          }
+        />
         <Route
           path="/user-registration"
           element={

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 // import { contactsReducer } from "./contacts/contactsSlice";
 // import { filtersReducer } from "./filter/filtersSlice";
 import { authReducer } from "./auth/authSlice.js";
+import { petsReducer } from "./pets/petsSlice.js";
 // import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 // import {
 //   persistStore,
@@ -24,8 +25,8 @@ import { authReducer } from "./auth/authSlice.js";
 
 export const store = configureStore({
   reducer: {
-    // filters: filtersReducer,
     auth: authReducer,
+    pets: petsReducer,
   }
 });
 
