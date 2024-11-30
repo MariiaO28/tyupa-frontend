@@ -1,0 +1,63 @@
+:root {
+    background: var(--background, #fff8e5);
+    color: var(--main-text-color, #737958);
+}
+
+body {
+    background-color: var(--background);
+    color: var(--main-text-color);
+    font-family: "Source Sans 3", sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: currentColor;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.container {
+    background-color: var(--background);
+    width: 100%;
+    padding: 48px 32px;
+}
+
+@media (min-width: 375px) {
+    .container {
+        width: 375px;
+
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 768px;
+        padding: 256px 156px;
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .container {
+        width: 1440px;
+        padding: 164px 405px;
+        font-size: 14px;
+    }
+}
