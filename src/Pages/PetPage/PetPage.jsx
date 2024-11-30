@@ -4,7 +4,7 @@ import TyupaAnimationComponent from "../../Components/TyupaAnimationComponent/Ty
 
 export default function PetPage() {
   return (
-    <div>
+    <div className="container">
         <Logo/>
         <TyupaAnimationComponent/>
         <PetInfo/>
