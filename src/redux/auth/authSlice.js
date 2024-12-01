@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, logout, registerNewUser } from "./authoperations";
+import { login, logout, registerNewUser } from "./_authOperations";
 import { handlePending, handleRejected } from "../utils";
 
 function handleAuth(state, action) {
