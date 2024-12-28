@@ -9,7 +9,6 @@ function handleAuth(state, action) {
   state.user.email = action.payload.user.email;
 }
 
-
 const authSlice = createSlice({
   name: "auth",
   initialState: {

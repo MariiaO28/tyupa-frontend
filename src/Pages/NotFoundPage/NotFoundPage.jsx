@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import css from './NotFoundPage.modulle.css';
+
 export default function NotFoundPage() {
   return (
-    <div>
-      <Link to="/pet-registration">Register your pet</Link>
-      <h2>This page not found</h2>
+    <div className = {css.container}>
+      <p>Page is not found!</p>
+      <p> Please <Link to="/pet-registration">register your pet.</Link></p>
     </div>
   );
 }

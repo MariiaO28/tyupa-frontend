@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPetData } from "./petsOperations";
+import { fetchPetData, registerNewPet } from "./petsOperations";
 import { handlePending, handleRejected } from "../utils";
 
 const petSlice = createSlice({
@@ -24,7 +24,14 @@ const petSlice = createSlice({
         state.pet = action.payload;
       })
       .addCase(fetchPetData.rejected, handleRejected)
-      .addCase(fetchPetData.pending, handlePending);
+      .addCase(fetchPetData.pending, handlePending)
+      .addCase(registerNewPet.fulfilled, (state, action) => {
+        state.pet = action.payload;
+        state.error = null;
+        state.isRefreshing = false;
+      })
+      .addCase(registerNewPet.rejected, handleRejected)
+      .addCase(registerNewPet.pending, handlePending)
   },
 });
 
