@@ -44,7 +44,7 @@ export default function PetSignUpForm() {
 
   const RegistrPetSchema = Yup.object().shape({
     name: Yup.string().min(2, 'Too Short!').max(15, 'Too long!').required().trim(),
-    birthday: Yup.date().required('Birthday is required').typeError('Invalid date format'),
+    birthday: Yup.date().required('Birthday is required').typeError('Invalid date format').max(new Date(), "Birthday cannot be in the future"),
     phone: Yup.string().matches(/^\d{10,12}$/, 'Phone number must be between 10 and 12 digits').required(),
     gender: Yup.string().oneOf(['Хлопчик', 'Дівчинка']).required('Gender is required'),
     breed: Yup.string().min(5, 'Too Short!').required('Breed is required').trim(),
