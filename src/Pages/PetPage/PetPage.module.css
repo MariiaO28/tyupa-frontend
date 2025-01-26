@@ -1,4 +1,19 @@
 .background {
-   background-image: url('../../assets/Background/backgroundDesktop1x.png');
-   background-color: red;
-  }
+  min-height: 600px;
+  background-image: url("../../assets/House/Mobile1x.png"),
+    url("../../assets/Background/backgroundDesktop1x.png");
+  background-repeat: no-repeat;
+  background-size: contain, cover;
+  background-position: center, bottom, center;
+}
+
+@media screen and (min-device-pixel-ratio: 2),
+screen and (-webkit-min-device-pixel-ratio: 2),
+screen and (-o-min-device-pixel-ratio: 2/1),
+screen and (min-resolution: 192dpi),
+screen and (min-resolution: 2dppx) {
+   .background{
+      background-image: url("../../assets/House/Mobile2x.png"),
+        url("../../assets/Background/backgroundDesktop2X.webp");
+   }
+}
