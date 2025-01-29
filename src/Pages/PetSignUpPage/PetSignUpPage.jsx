@@ -6,7 +6,8 @@ export default function PetSignUpPage() {
   return (
     <div className = {css.container}>
     <Logo/>
-    {/* <PetSignUpForm/> */}
+    <PetSignUpForm/>
     </div>
   )
 }
+ 

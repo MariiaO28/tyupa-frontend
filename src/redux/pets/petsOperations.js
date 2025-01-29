@@ -17,7 +17,8 @@ export const fetchPetData = createAsyncThunk(
   "pets/fetch",
   async (petId, thunkAPI) => {
     try {
-      const response = await axios.get(`/pets/${petId}`);
+      // const response = await axios.get(`/pets/${petId}`);
+      const response = await axios.get(`/pets/67717e5cf19292835fe49baa`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
