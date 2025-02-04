@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const registerNewPet = createAsyncThunk (
-  "pets/",
+  "pets/create",
   async (petData, thunkAPI) => {
     try {
       const response = await axios.post("/pets/", petData);
