@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
+import dayjs from 'dayjs';
 import {Formik, Form, Field} from 'formik';
-import { Box, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,7 +15,7 @@ export default function PetSignUpForm() {
 
   const initialValues = {
     name: "",
-    birthday: "",
+    birthday: null,
     phone: "",
     gender: "",
     breed: "",
@@ -29,9 +30,9 @@ export default function PetSignUpForm() {
 
     toast.promise(
       petRegisterPromise, {
-        loading:'Registration continues ...',
-        success: `Pet registered succesfully!`,
-        error: (error) => `Registration failed: ${error.message}`,
+        loading:'Реєстрація триває...',
+        success: 'Улюбленець успішно зареєстрований!',
+        error: (error) => `Помилка реєстрації: ${error.message}`,
       }
     );
 
@@ -43,181 +44,118 @@ export default function PetSignUpForm() {
   };
 
   const RegistrPetSchema = Yup.object().shape({
-    name: Yup.string().min(2, 'Too Short!').max(15, 'Too long!').required().trim(),
-    birthday: Yup.date().required('Birthday is required').typeError('Invalid date format').max(new Date(), "Birthday cannot be in the future"),
-    phone: Yup.string().matches(/^\d{10,12}$/, 'Phone number must be between 10 and 12 digits').required(),
-    gender: Yup.string().oneOf(['Хлопчик', 'Дівчинка']).required('Gender is required'),
-    breed: Yup.string().min(5, 'Too Short!').required('Breed is required').trim(),
-    color: Yup.string().min(3, 'Too Short!').required('Color is required').trim(),
-    telegram: Yup.string().min(1, 'Too Short!').required('Telegram is required').trim(),
-  })
+    name: Yup.string().min(2, 'Заадто коротке!').max(15, 'Занадто довге!').required('Ім`я улюбленця є бов`язковим').trim(),
+    birthday: Yup.date()
+    .typeError('Некоректна дата')
+    .max(dayjs(), 'Дата не може бути в майбутньому')
+    .min(dayjs('2005-01-01'), 'Дата народження має бути після 2005 року')
+    .required(`Дата народження є обов'язковою`),
+    phone: Yup.string().matches(/^\d{10,12}$/, 'Номер має містити 10-12 цифр').required('Номер телефону є обов`язковим'),
+    gender: Yup.string().oneOf(['Хлопчик', 'Дівчинка']).required(`Стать є обов'язковою`),
+    breed: Yup.string().min(3, 'Занадто коротка!').required(`Порода є обов'язковою`).trim(),
+    color: Yup.string().min(3, 'Занадто коротке!').required(`Колір є обов'язковим`).trim(),
+    telegram: Yup.string().min(3, 'Занадто коротке!').required(`Телеграм є обов'язковим`).trim(),
+  });
 
   return (
-    <Formik
-    initialValues={initialValues}
-    onSubmit={handleSubmit}
-    validationSchema={RegistrPetSchema}
-    >
-      {({errors, touched}) => (
-        <Form className={css.form}>
-          <Box
-            sx={{
-              '& .MuiTextField-root': {m:1, width: '29ch'},
-            }}
-            noValidate
-            autoComplete = 'off'
-          />
-            <Field name='name'>
-              {({field}) => (
+      <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={RegistrPetSchema}>
+        {({ errors, touched, values, setFieldValue }) => (
+          <Form className={css.form}>
+            <Field name="name">
+              {({ field }) => (
                 <TextField
-                   {...field}
-                   id="outlined-username"
-                   label="Ім'я улюбленця"
-                   variant="outlined"
-                   error={touched.name && Boolean(errors.name)}
-                   helperText={touched.name && errors.name}
-                />
-              )}
-            </Field>
-          <Box
-            sx={{
-            '& .MuiTextField-root': { m: 1, width: '29ch' },
-            }}
-            noValidate
-            autoComplete="off"
-          />
-           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Field name="birthday">
-             {({ field, form }) => (
-                <DatePicker
-                   {...field}
-                   label="Дата народження улюбленця"
-                   inputFormat="DD/MM/YYYY"
-                   value={field.value || null}
-                   onChange={(value) => form.setFieldValue('birthday', value)}
-                   renderInput={(params) => (
-                     <TextField
-                      {...params}
-                      error={form.touched.birthday && Boolean(form.errors.birthday)}
-                      helperText={form.touched.birthday && form.errors.birthday}
-                      fullWidth
-                      variant="outlined"
-                     />
-                    )}
-                />
-              )}
-             </Field>
-            </LocalizationProvider>
-            <Box
-            sx={{
-              '& .MuiTextFiels-root': {m:1, width: '29ch'},
-            }}
-            noValidate
-            autoComplete = 'off'
-          />
-            <Field name='phone'>
-              {({field}) => (
-                <TextField
-                   {...field}
-                   id="outlined-phone"
-                   label="Номер телефону"
-                   variant="outlined"
-                   error={touched.phone && Boolean(errors.phone)}
-                   helperText={touched.phone && errors.phone}
-                />
-              )}
-            </Field>
-            <Box
-            sx={{
-            '& .MuiTextField-root': { m: 1, width: '29ch' },
-            }}
-            noValidate
-            autoComplete="off"
-           />
-            <Field name="gender">
-             {({ field, meta }) => (
-               <FormControl
-                  fullWidth
-                  error={meta.touched && Boolean(meta.error)}
+                  {...field}
+                  label="Ім'я улюбленця"
                   variant="outlined"
-               >
-               <InputLabel id="gender-label">Стать улюбленця</InputLabel>
-               <Select
-                   {...field}
-                   id="outlined-gender"
-                   labelId="gender-label"
-                   label="Стать улюбленця"
-                   >
-                  <MenuItem value="Хлопчик">Хлопчик</MenuItem>
-                  <MenuItem value="Дівчинка">Дівчинка</MenuItem>
-               </Select>
-                  {meta.touched && meta.error && (
-               <FormHelperText>{meta.error}</FormHelperText>
-              )}
-              </FormControl>
-            )}
-           </Field>
-            <Box
-            sx={{
-              '& .MuiTextFiels-root': {m:1, width: '29ch'},
-            }}
-            noValidate
-            autoComplete = 'off'
-          />
-            <Field name='breed'>
-              {({field}) => (
-                <TextField
-                   {...field}
-                   id="outlined-breed"
-                   label="Порода улюбленця"
-                   variant="outlined"
-                   error={touched.breed && Boolean(errors.breed)}
-                   helperText={touched.breed && errors.breed}
+                  error={touched.name && Boolean(errors.name)}
+                  helperText={touched.name && errors.name}
                 />
               )}
             </Field>
-            <Box
-            sx={{
-              '& .MuiTextFiels-root': {m:1, width: '29ch'},
-            }}
-            noValidate
-            autoComplete = 'off'
-          />
-            <Field name='color'>
-              {({field}) => (
+  
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Дата народження"
+                value={values.birthday ? dayjs(values.birthday) : null}
+                onChange={(value) => setFieldValue('birthday', value ? value.toISOString() : null)}
+                disableFuture
+                slotProps={{
+                  textField: {
+                    error: touched.birthday && Boolean(errors.birthday),
+                    helperText: touched.birthday && errors.birthday,
+                    fullWidth: true,
+                    variant: 'outlined',
+                  },
+                }}
+              />
+            </LocalizationProvider>
+  
+            <Field name="phone">
+              {({ field }) => (
                 <TextField
-                   {...field}
-                   id="outlined-color"
-                   label="Забарвлення улюбленця"
-                   variant="outlined"
-                   error={touched.color && Boolean(errors.color)}
-                   helperText={touched.color && errors.color}
+                  {...field}
+                  label="Номер телефону"
+                  variant="outlined"
+                  error={touched.phone && Boolean(errors.phone)}
+                  helperText={touched.phone && errors.phone}
                 />
               )}
             </Field>
-            <Box
-            sx={{
-              '& .MuiTextFiels-root': {m:1, width: '29ch'},
-            }}
-            noValidate
-            autoComplete = 'off'
-          />
-            <Field name='telegram'>
-              {({field}) => (
+  
+            <Field name="gender">
+              {({ field, meta }) => (
+                <FormControl fullWidth error={meta.touched && Boolean(meta.error)} variant="outlined">
+                  <InputLabel id="gender-label">Стать улюбленця</InputLabel>
+                  <Select {...field} labelId="gender-label" label="Стать улюбленця">
+                    <MenuItem value="Хлопчик">Хлопчик</MenuItem>
+                    <MenuItem value="Дівчинка">Дівчинка</MenuItem>
+                  </Select>
+                  {meta.touched && meta.error && <FormHelperText>{meta.error}</FormHelperText>}
+                </FormControl>
+              )}
+            </Field>
+  
+            <Field name="breed">
+              {({ field }) => (
                 <TextField
-                   {...field}
-                   id="outlined-telegram"
-                   label="Телеграм"
-                   variant="outlined"
-                   error={touched.telegram && Boolean(errors.telegram)}
-                   helperText={touched.telegram && errors.telegram}
+                  {...field}
+                  label="Порода улюбленця"
+                  variant="outlined"
+                  error={touched.breed && Boolean(errors.breed)}
+                  helperText={touched.breed && errors.breed}
                 />
               )}
             </Field>
-            <button type="submit" className={css.button}>Зберегти</button>
-        </Form>
-      )
-      }
-    </Formik>
-  );
-}
+  
+            <Field name="color">
+              {({ field }) => (
+                <TextField
+                  {...field}
+                  label="Забарвлення улюбленця"
+                  variant="outlined"
+                  error={touched.color && Boolean(errors.color)}
+                  helperText={touched.color && errors.color}
+                />
+              )}
+            </Field>
+  
+            <Field name="telegram">
+              {({ field }) => (
+                <TextField
+                  {...field}
+                  label="Телеграм"
+                  variant="outlined"
+                  error={touched.telegram && Boolean(errors.telegram)}
+                  helperText={touched.telegram && errors.telegram}
+                />
+              )}
+            </Field>
+  
+            <button type="submit" className={css.button}>
+              Зберегти
+            </button>
+          </Form>
+        )}
+      </Formik>
+    );
+  }
