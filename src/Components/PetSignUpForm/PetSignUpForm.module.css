@@ -5,5 +5,12 @@
     flex-direction: column;
     gap: 10px;
     width: 348px;
+    color: #737958;
 };
 
+.petbutton {
+    width: 116px;
+    height: 35px;
+    background-color: #689581;
+    color: #FAFAFA;
+}
